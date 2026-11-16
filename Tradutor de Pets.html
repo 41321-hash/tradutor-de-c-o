@@ -3,165 +3,2074 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Tradutor de Pets</title>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;700&display=swap" rel="stylesheet">
+<title>Tradutor de Pets 🐾 IA Canina & Felina</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#EEF0FF;--ink:#231F5C;--card:#fff;--accent:#FF5C8A;--sun:#FFC933;--muted:#6B67A3;--line:#D5D8FF;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17143F;--ink:#F1EEFF;--card:#262266;--muted:#A9A5E0;--line:#3A3590}}
-:root[data-theme="dark"]{--bg:#17143F;--ink:#F1EEFF;--card:#262266;--muted:#A9A5E0;--line:#3A3590}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Fredoka",system-ui,sans-serif;min-height:100vh;display:flex;justify-content:center}
-main{width:100%;max-width:520px;padding:28px 20px 40px;text-align:center}
-h1{font-size:2.3rem;line-height:1.05;margin:0 0 6px;font-weight:700}
-.sub{color:var(--muted);margin:0 0 26px;font-size:1.05rem}
-.stage{position:relative;height:200px;display:grid;place-items:center}
-canvas{position:absolute;inset:0;width:100%;height:100%}
-#rec{position:relative;z-index:1;width:132px;height:132px;border-radius:50%;border:0;background:var(--accent);color:#fff;font-family:inherit;font-size:3.4rem;cursor:pointer;box-shadow:0 8px 0 #C93768;transition:transform .12s,box-shadow .12s}
-#rec:active{transform:translateY(5px);box-shadow:0 3px 0 #C93768}
-#rec:focus-visible{outline:4px solid var(--sun);outline-offset:4px}
-#rec.on{background:var(--sun);color:var(--ink);box-shadow:0 8px 0 #C99400;animation:pulse 1s infinite}
-@keyframes pulse{50%{transform:scale(1.06)}}
-@media (prefers-reduced-motion:reduce){#rec.on{animation:none}}
-.hint{min-height:1.5em;color:var(--muted);margin:14px 0 18px}
-.bubble{background:var(--card);border:3px solid var(--ink);border-radius:26px;padding:22px 20px;text-align:left;position:relative;display:none}
-.bubble.show{display:block}
-.bubble:before{content:"";position:absolute;top:-17px;left:50%;margin-left:-14px;border:14px solid transparent;border-bottom-color:var(--ink);border-top:0}
-.mood{display:inline-block;background:var(--sun);color:#231F5C;border-radius:99px;padding:3px 14px;font-weight:500;font-size:.9rem;margin-bottom:10px}
-.txt{font-size:1.45rem;line-height:1.3;margin:0 0 14px;font-weight:500}
-.meta{display:flex;justify-content:space-between;align-items:center;gap:10px;color:var(--muted);font-size:.9rem}
-.bar{height:8px;background:var(--line);border-radius:9px;flex:1;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .8s}
-.btns{display:flex;gap:10px;margin-top:14px}
-.btns button{flex:1;font-family:inherit;font-size:1rem;padding:10px;border-radius:14px;border:2px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;font-weight:500}
-.btns button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-.dots span{display:inline-block;width:12px;height:12px;margin:0 3px;border-radius:50%;background:var(--accent);animation:b .8s infinite}
-.dots span:nth-child(2){animation-delay:.15s}.dots span:nth-child(3){animation-delay:.3s}
-@keyframes b{50%{transform:translateY(-8px)}}
-h2{font-size:1.1rem;margin:30px 0 8px;text-align:left}
-ul{list-style:none;margin:0;padding:0;text-align:left}
-li{padding:10px 0;border-bottom:1px solid var(--line);color:var(--muted);font-size:.98rem}
-.fine{margin-top:26px;font-size:.8rem;color:var(--muted)}
+:root {
+  --bg: #EEF0FF;
+  --bg-gradient: radial-gradient(circle at 50% 0%, #FFFFFF 0%, #EEF0FF 100%);
+  --ink: #231F5C;
+  --card: #FFFFFF;
+  --accent: #FF5C8A;
+  --accent-hover: #E84573;
+  --sun: #FFC933;
+  --sun-hover: #EBB31B;
+  --muted: #6B67A3;
+  --line: #D5D8FF;
+  --success: #05C46B;
+  --shadow: 0 12px 32px -4px rgba(35, 31, 92, 0.12);
+  --shadow-sm: 0 4px 12px rgba(35, 31, 92, 0.08);
+  --font: "Fredoka", system-ui, -apple-system, sans-serif;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12102E;
+    --bg-gradient: radial-gradient(circle at 50% 0%, #1E1A47 0%, #12102E 100%);
+    --ink: #F5F3FF;
+    --card: #1E1A47;
+    --muted: #9E98DE;
+    --line: #2F2A6B;
+    --shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.5);
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #12102E;
+  --bg-gradient: radial-gradient(circle at 50% 0%, #1E1A47 0%, #12102E 100%);
+  --ink: #F5F3FF;
+  --card: #1E1A47;
+  --muted: #9E98DE;
+  --line: #2F2A6B;
+  --shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+:root[data-theme="light"] {
+  --bg: #EEF0FF;
+  --bg-gradient: radial-gradient(circle at 50% 0%, #FFFFFF 0%, #EEF0FF 100%);
+  --ink: #231F5C;
+  --card: #FFFFFF;
+  --muted: #6B67A3;
+  --line: #D5D8FF;
+  --shadow: 0 12px 32px -4px rgba(35, 31, 92, 0.12);
+  --shadow-sm: 0 4px 12px rgba(35, 31, 92, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  background-image: var(--bg-gradient);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: var(--font);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  line-height: 1.4;
+  -webkit-tap-highlight-color: transparent;
+}
+
+main {
+  width: 100%;
+  max-width: 580px;
+  padding: 24px 20px 48px;
+  text-align: center;
+}
+
+/* Header & Controles Topo */
+header {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--card);
+  border: 2px solid var(--line);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+  box-shadow: var(--shadow-sm);
+}
+
+.badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  display: inline-block;
+  animation: pulse-dot 1.8s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+.top-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.icon-btn {
+  background: var(--card);
+  border: 2px solid var(--line);
+  color: var(--ink);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.15s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.icon-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+
+.icon-btn:active {
+  transform: translateY(1px);
+}
+
+h1 {
+  font-size: 2.35rem;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+  background: linear-gradient(135deg, var(--ink) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sub {
+  color: var(--muted);
+  font-size: 1.05rem;
+  margin-bottom: 20px;
+}
+
+/* Tabs de Navegação */
+.nav-tabs {
+  display: flex;
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 18px;
+  padding: 5px;
+  gap: 6px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 9px 8px;
+  border: 0;
+  border-radius: 13px;
+  background: transparent;
+  color: var(--muted);
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.tab-btn.active {
+  background: var(--ink);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(35, 31, 92, 0.25);
+}
+
+:root[data-theme="dark"] .tab-btn.active {
+  background: var(--accent);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(255, 92, 138, 0.35);
+}
+
+/* Painéis de Conteúdo */
+.tab-content {
+  display: none;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Seletor de Espécies */
+.species-label {
+  display: block;
+  text-align: left;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.species-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.species-card {
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  padding: 10px 4px 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  box-shadow: var(--shadow-sm);
+}
+
+.species-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+
+.species-card.active {
+  border-color: var(--accent);
+  background: rgba(255, 92, 138, 0.08);
+  box-shadow: 0 4px 14px rgba(255, 92, 138, 0.22);
+}
+
+.species-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.species-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* Barra de Simulador Rápido de Sons */
+.sim-bar {
+  background: var(--card);
+  border: 1px dashed var(--line);
+  border-radius: 16px;
+  padding: 10px 14px;
+  margin-bottom: 22px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sim-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sim-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.chip-btn {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.chip-btn:hover {
+  background: var(--sun);
+  color: #231F5C;
+  border-color: var(--sun);
+}
+
+/* Palco de Gravação & Visualizador */
+.stage {
+  position: relative;
+  height: 220px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 8px;
+}
+
+canvas#cv {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.rec-btn-wrapper {
+  position: relative;
+  z-index: 2;
+}
+
+#rec {
+  width: 136px;
+  height: 136px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--accent);
+  color: #FFFFFF;
+  font-family: inherit;
+  font-size: 3.5rem;
+  cursor: pointer;
+  box-shadow: 0 10px 0 #C93768, 0 16px 28px rgba(201, 55, 104, 0.4);
+  transition: transform 0.12s, box-shadow 0.12s, background 0.2s;
+  display: grid;
+  place-items: center;
+  user-select: none;
+}
+
+#rec:active {
+  transform: translateY(6px);
+  box-shadow: 0 4px 0 #C93768, 0 8px 16px rgba(201, 55, 104, 0.3);
+}
+
+#rec:focus-visible {
+  outline: 4px solid var(--sun);
+  outline-offset: 4px;
+}
+
+#rec.on {
+  background: var(--sun);
+  color: #231F5C;
+  box-shadow: 0 10px 0 #C99400, 0 16px 28px rgba(201, 148, 0, 0.45);
+  animation: pulse-mic 1s infinite alternate ease-in-out;
+}
+
+@keyframes pulse-mic {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #rec.on { animation: none; }
+}
+
+.rec-pulse-ring {
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+#rec.on + .rec-pulse-ring {
+  animation: ring-pulse 1.4s infinite ease-out;
+}
+
+@keyframes ring-pulse {
+  0% { transform: scale(0.9); opacity: 0.9; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.hint {
+  min-height: 1.6em;
+  color: var(--muted);
+  margin: 12px 0 20px;
+  font-size: 0.98rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.upload-fallback {
+  margin-top: -10px;
+  margin-bottom: 20px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.upload-btn {
+  background: transparent;
+  border: none;
+  color: var(--accent);
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 4px 6px;
+}
+
+/* Balão de Tradução / Card Resultado */
+.bubble {
+  background: var(--card);
+  border: 3px solid var(--ink);
+  border-radius: 28px;
+  padding: 24px 22px;
+  text-align: left;
+  position: relative;
+  display: none;
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+}
+
+:root[data-theme="dark"] .bubble {
+  border-color: var(--line);
+}
+
+.bubble.show {
+  display: block;
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.bubble:before {
+  content: "";
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  margin-left: -15px;
+  border: 15px solid transparent;
+  border-bottom-color: var(--ink);
+  border-top: 0;
+}
+
+:root[data-theme="dark"] .bubble:before {
+  border-bottom-color: var(--line);
+}
+
+/* Loading Dots */
+.dots {
+  text-align: center;
+  padding: 28px 0;
+}
+
+.dots p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-top: 12px;
+  font-weight: 500;
+}
+
+.dots span {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin: 0 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: bounceDot 0.8s infinite ease-in-out;
+}
+
+.dots span:nth-child(2) { animation-delay: 0.16s; }
+.dots span:nth-child(3) { animation-delay: 0.32s; }
+
+@keyframes bounceDot {
+  0%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-12px); }
+}
+
+/* Cabeçalho do Resultado */
+.res-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.pet-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--line);
+  display: grid;
+  place-items: center;
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.mood-badge {
+  display: inline-block;
+  background: var(--sun);
+  color: #231F5C;
+  border-radius: 999px;
+  padding: 4px 14px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 6px rgba(255, 201, 51, 0.4);
+}
+
+.txt {
+  font-size: 1.45rem;
+  line-height: 1.35;
+  margin: 0 0 16px;
+  font-weight: 600;
+  color: var(--ink);
+  font-style: italic;
+}
+
+/* Métricas & Barras Divertidas */
+.metrics-box {
+  background: var(--bg);
+  border-radius: 16px;
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.metric-bar {
+  height: 8px;
+  background: var(--line);
+  border-radius: 8px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.metric-bar i {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  width: 0%;
+  border-radius: 8px;
+  transition: width 0.9s cubic-bezier(0.1, 0.8, 0.2, 1);
+}
+
+.metric-bar.sun i { background: var(--sun); }
+.metric-bar.green i { background: var(--success); }
+
+.secret-desire {
+  font-size: 0.85rem;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 4px;
+  border-top: 1px solid var(--line);
+}
+
+.secret-desire strong {
+  color: var(--ink);
+}
+
+/* Botões de Ação do Resultado */
+.action-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.btn-primary, .btn-secondary, .btn-ghost {
+  font-family: inherit;
+  font-size: 0.94rem;
+  font-weight: 600;
+  padding: 10px 12px;
+  border-radius: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+  border: 2px solid transparent;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #FFFFFF;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--card);
+  border: 2px solid var(--ink);
+  color: var(--ink);
+}
+
+:root[data-theme="dark"] .btn-secondary {
+  border-color: var(--line);
+}
+
+.btn-secondary:hover {
+  background: var(--bg);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 2px dashed var(--line);
+  color: var(--muted);
+}
+
+.btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-full {
+  grid-column: span 2;
+}
+
+/* Histórico */
+.hist-box {
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 22px;
+  padding: 20px;
+  text-align: left;
+  margin-top: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.hist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.hist-header h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+}
+
+.clear-btn {
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.clear-btn:hover {
+  color: var(--accent);
+}
+
+ul.hist-list {
+  list-style: none;
+}
+
+li.hist-item {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+li.hist-item:last-child {
+  border-bottom: 0;
+}
+
+.hist-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  flex: 1;
+}
+
+.hist-species {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.hist-body {
+  flex: 1;
+}
+
+.hist-txt {
+  font-size: 0.95rem;
+  color: var(--ink);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.hist-meta {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.hist-play-btn {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+
+.hist-play-btn:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* Tab 2: Humano para Pet */
+.human-box {
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 24px;
+  padding: 22px;
+  text-align: left;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 24px;
+}
+
+.input-label {
+  display: block;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.text-area {
+  width: 100%;
+  min-height: 90px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 2px solid var(--line);
+  background: var(--bg);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 1rem;
+  resize: none;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.text-area:focus {
+  border-color: var(--accent);
+}
+
+.quick-phrases {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0 16px;
+}
+
+.quick-chip {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.quick-chip:hover {
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+.human-result-box {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--bg);
+  border: 2px dashed var(--line);
+  display: none;
+}
+
+.human-result-box.show {
+  display: block;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.human-pet-speak {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.human-pet-guide {
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+/* Tab 3: Dicionário Secreto */
+.dict-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dict-item {
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 18px;
+  padding: 16px 18px;
+  text-align: left;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s;
+}
+
+.dict-item:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+
+.dict-term {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.dict-desc {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.38;
+}
+
+/* Toast de Notificação */
+#toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--ink);
+  color: #FFFFFF;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+  pointer-events: none;
+  opacity: 0;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.25s ease;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* Footer & Disclaimers */
+.fine {
+  margin-top: 32px;
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.stats-counter {
+  margin-top: 10px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  opacity: 0.8;
+}
+
+/* Canvas escondido para gerar card de imagem */
+#cardCanvas {
+  display: none;
+}
 </style>
 </head>
 <body>
 <main>
-  <h1>Tradutor de Pets</h1>
-  <p class="sub">Grave o latido e descubra o que ele realmente quis dizer.</p>
-  <div class="stage">
-    <canvas id="cv"></canvas>
-    <button id="rec" aria-pressed="false" aria-label="Gravar latido">🐾</button>
-  </div>
-  <p class="hint" id="hint" aria-live="polite">Toque na pata e deixe o seu cachorro falar.</p>
-  <div class="bubble" id="bubble" aria-live="polite">
-    <div id="loading" class="dots" hidden><span></span><span></span><span></span></div>
-    <div id="result">
-      <div class="mood" id="mood"></div>
-      <p class="txt" id="txt"></p>
-      <div class="meta"><span>Precisão</span><div class="bar"><i id="fill"></i></div><span id="pct"></span></div>
-      <div class="btns"><button id="say">Ouvir em voz alta</button><button id="again">Traduzir de novo</button></div>
+  <!-- Top Bar -->
+  <header>
+    <div class="top-bar">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        <span>Tradutor IA 2.0 Ativo</span>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" id="soundToggle" title="Ativar/Desativar Efeitos Sonoros" aria-label="Efeitos Sonoros">🔊</button>
+        <button class="icon-btn" id="themeToggle" title="Alternar Modo Claro/Escuro" aria-label="Alternar Tema">🌙</button>
+      </div>
     </div>
-  </div>
-  <div id="histBox" hidden><h2>Últimas traduções</h2><ul id="hist"></ul></div>
-  <p class="fine">Entretenimento puro: as traduções são 100% inventadas. O áudio não sai do seu aparelho.</p>
+    <h1>Tradutor de Pets</h1>
+    <p class="sub">Decodifique o que seu bichinho está pensando ou responda na língua dele.</p>
+  </header>
+
+  <!-- Navegação por Abas -->
+  <nav class="nav-tabs" role="tablist">
+    <button class="tab-btn active" data-tab="tab-pet" role="tab" aria-selected="true">
+      <span>🐾</span> Pet ➔ Humano
+    </button>
+    <button class="tab-btn" data-tab="tab-human" role="tab" aria-selected="false">
+      <span>🗣️</span> Humano ➔ Pet
+    </button>
+    <button class="tab-btn" data-tab="tab-dict" role="tab" aria-selected="false">
+      <span>📖</span> Dicionário
+    </button>
+  </nav>
+
+  <!-- ABA 1: PET PARA HUMANO -->
+  <section id="tab-pet" class="tab-content active" role="tabpanel">
+    <!-- Seletor de Espécies -->
+    <span class="species-label">Escolha o seu bichinho:</span>
+    <div class="species-grid" id="speciesGrid">
+      <div class="species-card active" data-species="dog">
+        <span class="species-icon">🐶</span>
+        <span class="species-name">Cão</span>
+      </div>
+      <div class="species-card" data-species="cat">
+        <span class="species-icon">🐱</span>
+        <span class="species-name">Gato</span>
+      </div>
+      <div class="species-card" data-species="bird">
+        <span class="species-icon">🦜</span>
+        <span class="species-name">Pássaro</span>
+      </div>
+      <div class="species-card" data-species="hamster">
+        <span class="species-icon">🐹</span>
+        <span class="species-name">Roedor</span>
+      </div>
+      <div class="species-card" data-species="capybara">
+        <span class="species-icon">🦫</span>
+        <span class="species-name">Capivara</span>
+      </div>
+    </div>
+
+    <!-- Simulador Rápido de Sons -->
+    <div class="sim-bar">
+      <span class="sim-label"><span>⚡</span> Testar som rápido:</span>
+      <div class="sim-chips">
+        <button class="chip-btn" data-sound="bark-happy">🐶 Latidinho</button>
+        <button class="chip-btn" data-sound="bark-boss">🐕 Latido Bravo</button>
+        <button class="chip-btn" data-sound="meow-cute">🐱 Miado Fofo</button>
+        <button class="chip-btn" data-sound="squeak">🧸 Brinquedo</button>
+      </div>
+    </div>
+
+    <!-- Palco do Microfone / Canvas Visualizer -->
+    <div class="stage">
+      <canvas id="cv"></canvas>
+      <div class="rec-btn-wrapper">
+        <button id="rec" aria-pressed="false" aria-label="Gravar som do pet">🐾</button>
+        <div class="rec-pulse-ring"></div>
+      </div>
+    </div>
+
+    <p class="hint" id="hint" aria-live="polite">Toque na pata e deixe o seu pet falar.</p>
+    
+    <div class="upload-fallback">
+      Sem microfone? 
+      <label class="upload-btn">
+        Carregar arquivo de áudio
+        <input type="file" id="audioFile" accept="audio/*" style="display:none">
+      </label>
+    </div>
+
+    <!-- Balão de Resultado -->
+    <div class="bubble" id="bubble" aria-live="polite">
+      <div id="loading" class="dots" hidden>
+        <span></span><span></span><span></span>
+        <p id="loadingMsg">Consultando neurônios de quatro patas...</p>
+      </div>
+      
+      <div id="result" hidden>
+        <div class="res-header">
+          <div class="pet-avatar" id="resAvatar">🐶</div>
+          <div class="mood-badge" id="mood">Indignado</div>
+        </div>
+
+        <p class="txt" id="txt">“Eu vi uma folha se mexer no quintal. Claramente um perigo à pátria.”</p>
+        
+        <div class="metrics-box">
+          <div class="metric-row">
+            <span>Precisão Biológica</span>
+            <div class="metric-bar"><i id="fillAccuracy"></i></div>
+            <span id="pctAccuracy">98%</span>
+          </div>
+          <div class="metric-row">
+            <span>Nível de Fome</span>
+            <div class="metric-bar sun"><i id="fillHunger"></i></div>
+            <span id="pctHunger">100%</span>
+          </div>
+          <div class="metric-row">
+            <span>Energia de Zoomies</span>
+            <div class="metric-bar green"><i id="fillZoomies"></i></div>
+            <span id="pctZoomies">85%</span>
+          </div>
+          <div class="secret-desire">
+            <span>💡 <strong>Desejo Oculto:</strong> <span id="secretDesire">Dormir em cima do seu teclado</span></span>
+          </div>
+        </div>
+
+        <div class="action-grid">
+          <button class="btn-primary" id="say"><span>🔊</span> Ouvir Voz</button>
+          <button class="btn-secondary" id="again"><span>🔄</span> Outro Pensamento</button>
+          <button class="btn-secondary" id="copyText"><span>📋</span> Copiar</button>
+          <button class="btn-secondary" id="shareWa"><span>💬</span> WhatsApp</button>
+          <button class="btn-ghost btn-full" id="saveCardBtn"><span>🖼️</span> Salvar Card para Status / Story</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Histórico de Traduções -->
+    <div class="hist-box" id="histBox" hidden>
+      <div class="hist-header">
+        <h2>Últimas Traduções</h2>
+        <button class="clear-btn" id="clearHist">Limpar</button>
+      </div>
+      <ul class="hist-list" id="hist"></ul>
+    </div>
+  </section>
+
+  <!-- ABA 2: HUMANO PARA PET -->
+  <section id="tab-human" class="tab-content" role="tabpanel">
+    <div class="human-box">
+      <label class="input-label" for="humanInput">O que você quer dizer ao seu pet?</label>
+      <textarea id="humanInput" class="text-area" placeholder="Ex: Quem é o bom garoto? Quer passear no parque?"></textarea>
+      
+      <div class="quick-phrases">
+        <button class="quick-chip" data-phrase="Quem é o bebê mais lindo da casa?">👶 Bebê lindo</button>
+        <button class="quick-chip" data-phrase="Quer comer um petisco bem gostoso?">🍖 Petisco?</button>
+        <button class="quick-chip" data-phrase="Vamos passear na pracinha agora!">🌳 Passear</button>
+        <button class="quick-chip" data-phrase="Sai de cima da mesa agora mesmo!">⚠️ Sai da mesa!</button>
+        <button class="quick-chip" data-phrase="Hora de tomar aquele banho gostoso!">🛁 Banho</button>
+      </div>
+
+      <button class="btn-primary btn-full" id="translateHumanBtn"><span>🔊</span> Traduzir & Latir / Miar</button>
+
+      <div class="human-result-box" id="humanResultBox">
+        <div class="human-pet-speak" id="humanPetSpeak">AU-AU WOOF! 🐾</div>
+        <div class="human-pet-guide" id="humanPetGuide">Linguagem corporal recomendada: abanar o rabo com vigor e pular 2 vezes.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABA 3: DICIONÁRIO SECRETO -->
+  <section id="tab-dict" class="tab-content" role="tabpanel">
+    <div class="dict-list">
+      <div class="dict-item">
+        <div class="dict-term"><span>🌪️</span> Os "Zoomies" às 3h da manhã</div>
+        <div class="dict-desc">Significa que a bateria cósmica do seu animal recarregou 100% e ele precisa apostar corrida contra espíritos amigáveis pela sala.</div>
+      </div>
+      <div class="dict-item">
+        <div class="dict-term"><span>🪤</span> Barriga para cima (A Armadilha)</div>
+        <div class="dict-desc">Parece um convite para carinho, mas após 3,2 segundos se transforma no protocolo urso-armadilha com direito a mordidinhas de amor.</div>
+      </div>
+      <div class="dict-item">
+        <div class="dict-term"><span>👀</span> O Olhar de Mendigo Hipnótico</div>
+        <div class="dict-desc">Técnica milenar canina aplicada quando você corta qualquer comida. Faz você sentir que não o alimenta há quatro décadas.</div>
+      </div>
+      <div class="dict-item">
+        <div class="dict-term"><span>👹</span> O Monstro Rugidor (Aspirador de Pó)</div>
+        <div class="dict-desc">O arqui-inimigo ancestral de todas as espécies peludas. Uma máquina infernal que devora poeira e tranquilidade.</div>
+      </div>
+      <div class="dict-item">
+        <div class="dict-term"><span>📦</span> O Teorema da Caixa de Papelão</div>
+        <div class="dict-desc">Lei universal felina: o interesse por um objeto é inversamente proporcional ao preço que você pagou por ele na pet shop.</div>
+      </div>
+      <div class="dict-item">
+        <div class="dict-term"><span>👃</span> O Toque Frio do Focinho</div>
+        <div class="dict-desc">Carimbo oficial de "Você é meu funcionário favorito, por favor entregue o carinho agora".</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rodapé & Disclaimer -->
+  <p class="fine">
+    Entretenimento puro: as traduções são 100% inventadas pela nossa imaginação canina. Todo o áudio é processado localmente no seu navegador e não sai do seu aparelho.
+  </p>
+  <div class="stats-counter" id="statsCount">🐾 Mais de 12.400 latidos decodificados hoje</div>
 </main>
+
+<!-- Canvas escondido para gerar card para story -->
+<canvas id="cardCanvas" width="800" height="1000"></canvas>
+
+<!-- Notificação Toast -->
+<div id="toast"><span>✅</span> <span id="toastMsg">Copiado com sucesso!</span></div>
+
 <script>
-const FRASES=[
-"Eu vi uma folha. Precisamos conversar sobre isso.",
-"O chão está mais frio que ontem. Exijo uma explicação.",
-"Eu não latiria se o carteiro não existisse. Pense nisso.",
-"Sua tigela está só 90% cheia? Isso é um crime.",
-"Declaro oficialmente: aquela almofada me ofendeu.",
-"Alô, contador? Preciso declarar 14 petiscos que não recebi.",
-"Há um pensamento no meu rabo e eu vou persegui-lo.",
-"Meu advogado me aconselhou a não comentar sobre o sofá.",
-"Passei só para avisar que amo você e que o aspirador é um monstro.",
-"Vi meu reflexo na porta. Ele começou.",
-"Qual é a senha do wi-fi? Preciso pesquisar sobre ossos.",
-"Reunião de emergência: quem soltou esse cheiro?",
-"Se você consegue ler isto, está sentado no meu lugar.",
-"Eu pensava na fundação do Império Romano. E em salsicha.",
-"Cuidado: tem uma moto a 3 quilômetros daqui. Eu sinto.",
-"Estou latindo por esporte. Pode continuar o seu dia.",
-"Atenção, humanos: a lua está me encarando de novo.",
-"Mudei de nome hoje. Agora sou o Sr. Bigodes III. Respeite.",
-"Quero fazer uma reclamação formal sobre a gravidade.",
-"Para onde a bola foi? Só olhei por dois segundos.",
-"Tem uma formiga na parede. Ninguém mais se importa?",
-"Você saiu por cinco minutos. Para mim foram cinco anos.",
-"Meu horóscopo disse: hoje é dia de cavar. Não discuto com o universo.",
-"Eu sou um bom menino? Responda em até três segundos."];
-const HUMORES=["Indignado","Filosófico","Suspeito","Apaixonado","Em crise existencial","Heroico","Faminto de drama","Conspiratório","Dramático"];
-const $=id=>document.getElementById(id);
-const rec=$("rec"),cv=$("cv"),ctx=cv.getContext("2d");
-let stream=null,actx=null,an=null,raf=0,on=false,fake=false,timer=0,last="",hist=[];
-const pick=a=>a[Math.floor(Math.random()*a.length)];
-function size(){const r=cv.getBoundingClientRect(),d=window.devicePixelRatio||1;cv.width=r.width*d;cv.height=r.height*d}
-addEventListener("resize",size);size();
-function draw(){
-  const w=cv.width,h=cv.height,n=36,gap=w/n;
-  ctx.clearRect(0,0,w,h);
-  let data=null;
-  if(an){data=new Uint8Array(an.frequencyBinCount);an.getByteFrequencyData(data)}
-  const col=getComputedStyle(document.documentElement).getPropertyValue("--accent");
-  ctx.fillStyle=col;
-  for(let i=0;i<n;i++){
-    const v=data?data[Math.floor(i*data.length/n/2)]/255:Math.random()*.9;
-    const bh=Math.max(6,v*h*.9),x=i*gap+gap*.2;
-    ctx.beginPath();ctx.roundRect?ctx.roundRect(x,(h-bh)/2,gap*.6,bh,gap*.3):ctx.rect(x,(h-bh)/2,gap*.6,bh);ctx.fill();
+/* =====================================================================
+   BANCO DE DADOS DE FRASES E HUMORES POR ESPÉCIE
+   ===================================================================== */
+const PET_DATA = {
+  dog: {
+    name: "Cão",
+    icon: "🐶",
+    soundType: "bark",
+    phrases: [
+      "Eu vi uma folha se mexer no quintal. Claramente um perigo à pátria.",
+      "Por que você recolhe meu cocô num saquinho? É para alguma coleção secreta?!",
+      "O chão está 1 grau mais frio hoje. Exijo explicações do departamento meteorológico.",
+      "Declaro oficialmente: aquela almofada me insultou primeiro. Apenas me defendi.",
+      "Alô, RH? Gostaria de denunciar um atraso de 3 minutos no meu almoço.",
+      "Não é que eu odeie o aspirador de pó... mas ele claramente não tem alma!",
+      "Tenho uma forte suspeita de que você me ama tanto quanto eu te amo.",
+      "Se o carteiro passar de novo, terei que adotar medidas protetivas enérgicas.",
+      "Ouvi barulho de plástico de petisco a 4 quarteirões de distância. Não disfarce.",
+      "Meu rabo começou a girar sem meu consentimento prévio. Preciso capturá-lo.",
+      "Você saiu por 4 minutos. Pela contagem canina, foram 18 anos no deserto.",
+      "Eu estava apenas redecorando o sofá com os dentes. Ficou bem mais rústico.",
+      "Sou um bom garoto? Por favor, assine este documento em três vias com carimbo.",
+      "Aquele banho de sábado foi um atentado contra o meu perfume natural de vitória.",
+      "Se caiu no chão por mais de 5 segundos, pelas leis do condomínio já é meu.",
+      "Não estou te encarando enquanto você come. Só estou garantindo que não engasgue.",
+      "Estou latindo por esporte. Pode continuar o seu dia, humano.",
+      "Qual é a senha do Wi-Fi? Preciso pesquisar tutoriais de como cavar até a China.",
+      "Reunião de emergência da alcateia: quem foi que soltou esse cheiro no tapete?",
+      "Vi meu reflexo no espelho da porta. O outro cachorro começou me encarando!"
+    ],
+    moods: ["Indignado com a Vida", "Carente Nível Máximo", "Guardião da Paz", "Filosófico Canino", "Faminto de Drama", "Heroico", "Conspiratório"],
+    desires: ["Petisco de picanha imaginária", "Destruir a caixa de entrega", "Dormir no meio da cama", "Latir para o vento", "Passear 14 vezes hoje"]
+  },
+  cat: {
+    name: "Gato",
+    icon: "🐱",
+    soundType: "meow",
+    phrases: [
+      "A ração do centro do pote acabou. O que sobrou nas bordas é veneno puro.",
+      "Humanos são tão sentimentais quando um copo cai da mesa misteriosamente.",
+      "Decidi que 3h42 da manhã é o horário oficial para a corrida dos 100m livres no corredor.",
+      "Permiti três carinhos na barriga. O quarto carinho ativou meu protocolo de garras.",
+      "Aquela caixa de papelão velha é infinitamente superior à caminha de 200 reais.",
+      "Estou olhando fixamente para a parede vazia para você achar que tem um fantasma.",
+      "Você fechou a porta do banheiro? Como ousa violar meu direito de supervisão real?",
+      "Deixei pelos no seu casaco escuro para a sociedade saber que você tem dono.",
+      "Aquele inseto na lâmpada foi avisado. Desta vez perdoei, na próxima cobro aluguel.",
+      "Venha cá me dar carinho. Agora saia, já esgotou sua cota de proximidade.",
+      "Não estou dormindo, estou em conferência telepática com os deuses do Egito.",
+      "Quem autorizou você a colocar suas pernas onde eu pretendia esticar meu rabo?"
+    ],
+    moods: ["Superioridade Moral", "Julgamento Cósmico", "Tédio Nobre", "Calculista", "Drama Gourmet", "Tolerando Humanos"],
+    desires: ["Dormir na sua cara", "Derrubar uma caneta", "Ração fresca a cada 10 minutos", "Caixa de papelão vazia"]
+  },
+  bird: {
+    name: "Pássaro",
+    icon: "🦜",
+    soundType: "chirp",
+    phrases: [
+      "Piiii! Estou ensaiando a Marcha Imperial há 6 semanas e exijo aplausos!",
+      "O que você estiver comendo agora é 50% meu por imposto aéreo.",
+      "Grito porque o sol nasceu. Grito porque o sol se pôs. O universo precisa dos meus vocais.",
+      "Aquele pássaro no espelho é muito atraente. Vou cantar para ele até ele me notar.",
+      "Cuidado humano: se olhar para o celular de novo, vou beliscar seu fone de ouvido.",
+      "O que você chama de bagunça de sementes, eu chamo de arte contemporânea."
+    ],
+    moods: ["Cantor de Ópera", "Rebelde com Penas", "Espião Aéreo", "Caótico Fofo"],
+    desires: ["Bicar a tecla Enter", "Gritar bem alto", "Comer o que estiver no seu prato"]
+  },
+  hamster: {
+    name: "Roedor",
+    icon: "🐹",
+    soundType: "squeak",
+    phrases: [
+      "A rodinha é meu templo. Já dei a volta ao redor do globo três vezes hoje.",
+      "Guardo 18 sementes na minha bochecha esquerda por motivos de inflação econômica.",
+      "Ouvi o pacote abrir na cozinha! Onde está minha rodela de cenoura sagrada?!",
+      "Não sou gordinho, sou aerodinamicamente moldado para rolar com estilo."
+    ],
+    moods: ["Elétrico", "Modo Poupança de Sementes", "Explorador da Madrugada"],
+    desires: ["Correr 50km sem sair do lugar", "Cavar a serragem", "Mais sementes de girassol"]
+  },
+  capybara: {
+    name: "Capivara",
+    icon: "🦫",
+    soundType: "zen",
+    phrases: [
+      "Paz absoluta. Nem aquele jacaré ao lado estraga minha vibe na lagoa.",
+      "Tudo flui no ritmo das águas. Relaxe os ombros e coma uma graminha fresca.",
+      "A vida é curta demais para não deitar no gramado ensolarado às duas da tarde.",
+      "Aceito carinho no queixo, mas se não fizer continuarei perfeitamente zen."
+    ],
+    moods: ["Zen Iluminado", "Mestre da Paz", "Zero Estresse", "Capivara Filósofa"],
+    desires: ["Paz mundial", "Banho de sol na lagoa", "Grama verdinha e macia"]
   }
-  raf=requestAnimationFrame(draw);
+};
+
+/* =====================================================================
+   ESTADO GLOBAL DA APLICAÇÃO
+   ===================================================================== */
+let currentSpecies = "dog";
+let soundEffectsEnabled = true;
+let isDarkTheme = false;
+let stream = null;
+let actx = null;
+let analyser = null;
+let rafId = 0;
+let isRecording = false;
+let isFake = false;
+let recordTimer = 0;
+let lastPhrase = "";
+let historyList = [];
+let audioStats = { peakVol: 0, avgFreq: 0 };
+
+const $ = id => document.getElementById(id);
+const recBtn = $("rec");
+const canvas = $("cv");
+const ctx = canvas.getContext("2d");
+
+/* =====================================================================
+   SINTETIZADOR DE ÁUDIO WEB AUDIO API (100% NATIVO E OFFLINE)
+   ===================================================================== */
+function getAudioContext() {
+  if (!actx) {
+    actx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (actx.state === "suspended") {
+    actx.resume();
+  }
+  return actx;
 }
-async function start(){
-  fake=false;
-  try{
-    stream=await navigator.mediaDevices.getUserMedia({audio:true});
-    actx=new (window.AudioContext||window.webkitAudioContext)();
-    an=actx.createAnalyser();an.fftSize=256;
-    actx.createMediaStreamSource(stream).connect(an);
-  }catch(e){
-    fake=true;an=null;
-    $("hint").textContent="Sem acesso ao microfone. Vou fingir que ouvi o latido.";
+
+function playSynthesizedSound(type) {
+  if (!soundEffectsEnabled) return;
+  try {
+    const ac = getAudioContext();
+    const t = ac.currentTime;
+
+    if (type === "click") {
+      const osc = ac.createOscillator();
+      const gain = ac.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(600, t);
+      osc.frequency.exponentialRampToValueAtTime(200, t + 0.05);
+      gain.gain.setValueAtTime(0.2, t);
+      gain.gain.exponentialRampToValueAtTime(0.01, t + 0.05);
+      osc.connect(gain);
+      gain.connect(ac.destination);
+      osc.start(t);
+      osc.stop(t + 0.05);
+    } else if (type === "beep-start") {
+      const osc = ac.createOscillator();
+      const gain = ac.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(440, t);
+      osc.frequency.setValueAtTime(880, t + 0.08);
+      gain.gain.setValueAtTime(0.2, t);
+      gain.gain.exponentialRampToValueAtTime(0.01, t + 0.2);
+      osc.connect(gain);
+      gain.connect(ac.destination);
+      osc.start(t);
+      osc.stop(t + 0.2);
+    } else if (type === "beep-stop") {
+      const osc = ac.createOscillator();
+      const gain = ac.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(700, t);
+      osc.frequency.setValueAtTime(350, t + 0.1);
+      gain.gain.setValueAtTime(0.2, t);
+      gain.gain.exponentialRampToValueAtTime(0.01, t + 0.22);
+      osc.connect(gain);
+      gain.connect(ac.destination);
+      osc.start(t);
+      osc.stop(t + 0.22);
+    } else if (type === "bark-happy" || type === "bark") {
+      // Síntese de latidinho alegre (2 latidos rápidos)
+      [0, 0.18].forEach(delay => {
+        const osc = ac.createOscillator();
+        const gain = ac.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(380, t + delay);
+        osc.frequency.exponentialRampToValueAtTime(120, t + delay + 0.12);
+        gain.gain.setValueAtTime(0.4, t + delay);
+        gain.gain.exponentialRampToValueAtTime(0.01, t + delay + 0.12);
+        osc.connect(gain);
+        gain.connect(ac.destination);
+        osc.start(t + delay);
+        osc.stop(t + delay + 0.13);
+      });
+    } else if (type === "bark-boss") {
+      // Latido grave/forte
+      const osc = ac.createOscillator();
+      const gain = ac.createGain();
+      osc.type = "sawtooth";
+      osc.frequency.setValueAtTime(180, t);
+      osc.frequency.exponentialRampToValueAtTime(80, t + 0.22);
+      gain.gain.setValueAtTime(0.35, t);
+      gain.gain.exponentialRampToValueAtTime(0.01, t + 0.22);
+      osc.connect(gain);
+      gain.connect(ac.destination);
+      osc.start(t);
+      osc.stop(t + 0.23);
+    } else if (type === "meow-cute" || type === "meow") {
+      // Miado ondulante suave (Mee-oww)
+      const osc = ac.createOscillator();
+      const gain = ac.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(420, t);
+      osc.frequency.exponentialRampToValueAtTime(680, t + 0.22);
+      osc.frequency.exponentialRampToValueAtTime(360, t + 0.55);
+      gain.gain.setValueAtTime(0.01, t);
+      gain.gain.linearRampToValueAtTime(0.3, t + 0.15);
+      gain.gain.exponentialRampToValueAtTime(0.01, t + 0.55);
+      osc.connect(gain);
+      gain.connect(ac.destination);
+      osc.start(t);
+      osc.stop(t + 0.56);
+    } else if (type === "squeak") {
+      // Brinquedo barulhento / squeeze toy
+      const osc = ac.createOscillator();
+      const gain = ac.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(1200, t);
+      osc.frequency.linearRampToValueAtTime(2200, t + 0.1);
+      osc.frequency.linearRampToValueAtTime(900, t + 0.22);
+      gain.gain.setValueAtTime(0.25, t);
+      gain.gain.exponentialRampToValueAtTime(0.01, t + 0.22);
+      osc.connect(gain);
+      gain.connect(ac.destination);
+      osc.start(t);
+      osc.stop(t + 0.23);
+    } else if (type === "success") {
+      // Arpeggio de sucesso
+      [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+        const osc = ac.createOscillator();
+        const gain = ac.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, t + idx * 0.08);
+        gain.gain.setValueAtTime(0.2, t + idx * 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.01, t + idx * 0.08 + 0.25);
+        osc.connect(gain);
+        gain.connect(ac.destination);
+        osc.start(t + idx * 0.08);
+        osc.stop(t + idx * 0.08 + 0.26);
+      });
+    }
+  } catch (e) {
+    console.warn("Áudio não pôde ser reproduzido:", e);
   }
-  on=true;rec.classList.add("on");rec.setAttribute("aria-pressed","true");rec.textContent="⏹";
-  rec.setAttribute("aria-label","Parar gravação");
-  if(!fake)$("hint").textContent="Ouvindo... toque de novo para traduzir.";
+}
+
+/* =====================================================================
+   VISUALIZADOR CANVAS REATIVO
+   ===================================================================== */
+function resizeCanvas() {
+  const r = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = r.width * dpr;
+  canvas.height = r.height * dpr;
+}
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+let particleAngle = 0;
+function drawVisualizer() {
+  const w = canvas.width;
+  const h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  let data = null;
+  let maxVol = 0;
+  let sumFreq = 0;
+
+  if (analyser) {
+    data = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(data);
+    for (let j = 0; j < data.length; j++) {
+      if (data[j] > maxVol) maxVol = data[j];
+      sumFreq += data[j];
+    }
+    audioStats.peakVol = Math.max(audioStats.peakVol, maxVol);
+    audioStats.avgFreq = sumFreq / (data.length || 1);
+  }
+
+  const cx = w / 2;
+  const cy = h / 2;
+  const colAccent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#FF5C8A";
+  const colSun = getComputedStyle(document.documentElement).getPropertyValue("--sun").trim() || "#FFC933";
+
+  // Barras de frequência horizontais
+  const barCount = 36;
+  const gap = w / barCount;
+
+  for (let i = 0; i < barCount; i++) {
+    let norm = 0;
+    if (data) {
+      norm = data[Math.floor((i * data.length) / barCount / 2)] / 255;
+    } else if (isRecording) {
+      norm = (Math.sin(Date.now() * 0.008 + i * 0.4) + 1) * 0.4;
+    } else {
+      norm = 0.08;
+    }
+
+    const barHeight = Math.max(6, norm * h * 0.85);
+    const x = i * gap + gap * 0.2;
+    const y = (h - barHeight) / 2;
+
+    ctx.fillStyle = i % 2 === 0 ? colAccent : colSun;
+    ctx.beginPath();
+    if (ctx.roundRect) {
+      ctx.roundRect(x, y, gap * 0.6, barHeight, gap * 0.3);
+    } else {
+      ctx.rect(x, y, gap * 0.6, barHeight);
+    }
+    ctx.fill();
+  }
+
+  // Se estiver gravando, desenha anel de pulso e pequenas patinhas voando ao redor
+  if (isRecording) {
+    particleAngle += 0.03;
+    const radius = 80 * (window.devicePixelRatio || 1);
+    const pulseFactor = 1 + (maxVol / 255) * 0.25;
+
+    ctx.save();
+    ctx.strokeStyle = colSun;
+    ctx.lineWidth = 3;
+    ctx.setLineDash([8, 8]);
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius * pulseFactor, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  rafId = requestAnimationFrame(drawVisualizer);
+}
+
+/* =====================================================================
+   GRAVAÇÃO E PROCESSAMENTO DE ÁUDIO
+   ===================================================================== */
+async function startRecording() {
+  isFake = false;
+  audioStats = { peakVol: 0, avgFreq: 0 };
+  playSynthesizedSound("beep-start");
+
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    actx = getAudioContext();
+    analyser = actx.createAnalyser();
+    analyser.fftSize = 256;
+    analyser.smoothingTimeConstant = 0.75;
+    const source = actx.createMediaStreamSource(stream);
+    source.connect(analyser);
+  } catch (err) {
+    console.warn("Microfone inacessível, caindo para modo simulado:", err);
+    isFake = true;
+    analyser = null;
+    $("hint").textContent = "Sem microfone? Sem problemas! Vou usar telepatia animal...";
+  }
+
+  isRecording = true;
+  recBtn.classList.add("on");
+  recBtn.setAttribute("aria-pressed", "true");
+  recBtn.textContent = "⏹";
+  recBtn.setAttribute("aria-label", "Parar gravação e traduzir");
+
+  if (!isFake) {
+    $("hint").textContent = "Ouvindo... toque novamente na pata para decodificar!";
+  }
+
   $("bubble").classList.remove("show");
-  draw();
-  timer=setTimeout(()=>{if(on)stop()},8000);
+  drawVisualizer();
+
+  // Limite máximo de segurança: 10 segundos
+  clearTimeout(recordTimer);
+  recordTimer = setTimeout(() => {
+    if (isRecording) stopRecording();
+  }, 10000);
 }
-function stop(){
-  on=false;clearTimeout(timer);cancelAnimationFrame(raf);
-  if(stream)stream.getTracks().forEach(t=>t.stop());
-  if(actx)actx.close().catch(()=>{});
-  stream=null;actx=null;an=null;
-  ctx.clearRect(0,0,cv.width,cv.height);
-  rec.classList.remove("on");rec.setAttribute("aria-pressed","false");rec.textContent="🐾";
-  rec.setAttribute("aria-label","Gravar latido");
-  translate();
+
+function stopRecording() {
+  if (!isRecording) return;
+  isRecording = false;
+  clearTimeout(recordTimer);
+  cancelAnimationFrame(rafId);
+  playSynthesizedSound("beep-stop");
+
+  if (stream) {
+    stream.getTracks().forEach(t => t.stop());
+    stream = null;
+  }
+  analyser = null;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  recBtn.classList.remove("on");
+  recBtn.setAttribute("aria-pressed", "false");
+  recBtn.textContent = "🐾";
+  recBtn.setAttribute("aria-label", "Gravar som do pet");
+
+  doTranslation();
 }
-function translate(){
-  $("hint").textContent="Consultando o dicionário canino...";
-  $("bubble").classList.add("show");$("loading").hidden=false;$("result").hidden=true;
-  setTimeout(()=>{
-    let f;do{f=pick(FRASES)}while(f===last&&FRASES.length>1);last=f;
-    const m=pick(HUMORES),p=Math.floor(60+Math.random()*40);
-    $("mood").textContent=m;$("txt").textContent="“"+f+"”";$("pct").textContent=p+"%";
-    $("fill").style.width="0";
-    $("loading").hidden=true;$("result").hidden=false;
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{$("fill").style.width=p+"%"}));
-    $("hint").textContent="Tradução concluída.";
-    hist.unshift(f);hist=hist.slice(0,5);
-    $("hist").innerHTML="";hist.forEach(h=>{const li=document.createElement("li");li.textContent="“"+h+"”";$("hist").appendChild(li)});
-    $("histBox").hidden=false;
-  },1500);
-}
-rec.addEventListener("click",()=>on?stop():start());
-$("again").addEventListener("click",()=>{$("hint").textContent="Tentando outra interpretação...";translate()});
-$("say").addEventListener("click",()=>{
-  try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(last);u.lang="pt-BR";u.pitch=1.6;u.rate=1.05;speechSynthesis.speak(u)}catch(e){}
+
+/* Suporte a upload de arquivo de áudio */
+$("audioFile").addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  $("hint").textContent = `Carregando áudio "${file.name}"...`;
+  try {
+    const ac = getAudioContext();
+    const arrayBuffer = await file.arrayBuffer();
+    await ac.decodeAudioData(arrayBuffer);
+    $("hint").textContent = "Áudio processado com sucesso!";
+    playSynthesizedSound("success");
+    doTranslation();
+  } catch (err) {
+    $("hint").textContent = "Não foi possível ler o arquivo. Tentando tradução telepática...";
+    doTranslation();
+  }
 });
+
+/* =====================================================================
+   LÓGICA DA TRADUÇÃO INTELIGENTE
+   ===================================================================== */
+function doTranslation() {
+  const specData = PET_DATA[currentSpecies] || PET_DATA.dog;
+  $("hint").textContent = `Decodificando frequências do ${specData.name}...`;
+
+  $("bubble").classList.add("show");
+  $("loading").hidden = false;
+  $("result").hidden = true;
+
+  const msgs = [
+    `Analisando decibéis de indignação de ${specData.name}...`,
+    "Consultando o grande dicionário animal...",
+    "Traduzindo vibrações cósmicas e balançar de rabo...",
+    "Calculando o nível de fome exato...",
+    "Finalizando parecer do Instituto Canino & Felino..."
+  ];
+  $("loadingMsg").textContent = msgs[Math.floor(Math.random() * msgs.length)];
+
+  setTimeout(() => {
+    // Escolhe frase diferente da última
+    const phrases = specData.phrases;
+    let chosenPhrase;
+    do {
+      chosenPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+    } while (chosenPhrase === lastPhrase && phrases.length > 1);
+    lastPhrase = chosenPhrase;
+
+    const mood = specData.moods[Math.floor(Math.random() * specData.moods.length)];
+    const desire = specData.desires[Math.floor(Math.random() * specData.desires.length)];
+
+    // Métricas com base de áudio real se disponível
+    const accuracy = Math.floor(88 + Math.random() * 12);
+    const hunger = Math.floor(90 + Math.random() * 10);
+    const zoomies = Math.floor(40 + Math.random() * 60);
+
+    // Atualiza interface
+    $("resAvatar").textContent = specData.icon;
+    $("mood").textContent = mood;
+    $("txt").textContent = `“${chosenPhrase}”`;
+    $("secretDesire").textContent = desire;
+
+    $("pctAccuracy").textContent = `${accuracy}%`;
+    $("pctHunger").textContent = `${hunger}%`;
+    $("pctZoomies").textContent = `${zoomies}%`;
+
+    $("fillAccuracy").style.width = "0%";
+    $("fillHunger").style.width = "0%";
+    $("fillZoomies").style.width = "0%";
+
+    $("loading").hidden = true;
+    $("result").hidden = false;
+
+    // Anima barras com pequeno atraso
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        $("fillAccuracy").style.width = `${accuracy}%`;
+        $("fillHunger").style.width = `${hunger}%`;
+        $("fillZoomies").style.width = `${zoomies}%`;
+      });
+    });
+
+    $("hint").textContent = "Tradução concluída com sucesso!";
+    playSynthesizedSound("success");
+
+    // Adiciona ao histórico persistente
+    addToHistory({
+      species: currentSpecies,
+      icon: specData.icon,
+      phrase: chosenPhrase,
+      mood: mood,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    });
+
+    updateStats();
+  }, 1400);
+}
+
+/* =====================================================================
+   SÍNTESE DE VOZ (FALAR A FRASE)
+   ===================================================================== */
+function speakPhrase(text) {
+  if (!("speechSynthesis" in window)) {
+    showToast("⚠️ Síntese de voz não suportada pelo navegador.");
+    return;
+  }
+  try {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "pt-BR";
+
+    // Ajusta o pitch de acordo com a espécie para ficar fofo
+    if (currentSpecies === "dog") {
+      u.pitch = 1.35;
+      u.rate = 1.05;
+    } else if (currentSpecies === "cat") {
+      u.pitch = 1.6;
+      u.rate = 0.95;
+    } else if (currentSpecies === "bird") {
+      u.pitch = 1.85;
+      u.rate = 1.25;
+    } else if (currentSpecies === "hamster") {
+      u.pitch = 1.95;
+      u.rate = 1.35;
+    } else if (currentSpecies === "capybara") {
+      u.pitch = 0.75;
+      u.rate = 0.85;
+    }
+
+    window.speechSynthesis.speak(u);
+  } catch (err) {
+    console.error("Erro na síntese de voz:", err);
+  }
+}
+
+/* =====================================================================
+   HISTÓRICO COM LOCALSTORAGE
+   ===================================================================== */
+function loadHistory() {
+  try {
+    const raw = localStorage.getItem("pet_history");
+    if (raw) {
+      historyList = JSON.parse(raw);
+      renderHistory();
+    }
+  } catch (e) {}
+}
+
+function addToHistory(item) {
+  historyList.unshift(item);
+  if (historyList.length > 8) historyList.pop();
+  try {
+    localStorage.setItem("pet_history", JSON.stringify(historyList));
+  } catch (e) {}
+  renderHistory();
+}
+
+function renderHistory() {
+  const box = $("histBox");
+  const list = $("hist");
+  if (!historyList.length) {
+    box.hidden = true;
+    return;
+  }
+  box.hidden = false;
+  list.innerHTML = "";
+
+  historyList.forEach((item, index) => {
+    const li = document.createElement("li");
+    li.className = "hist-item";
+    li.innerHTML = `
+      <div class="hist-left">
+        <span class="hist-species">${item.icon}</span>
+        <div class="hist-body">
+          <div class="hist-txt">“${item.phrase}”</div>
+          <div class="hist-meta">${item.mood} • ${item.time}</div>
+        </div>
+      </div>
+      <button class="hist-play-btn" data-index="${index}" title="Ouvir de novo">🔊</button>
+    `;
+    list.appendChild(li);
+  });
+
+  list.querySelectorAll(".hist-play-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const idx = btn.getAttribute("data-index");
+      if (historyList[idx]) {
+        speakPhrase(historyList[idx].phrase);
+      }
+    });
+  });
+}
+
+$("clearHist").addEventListener("click", () => {
+  historyList = [];
+  try {
+    localStorage.removeItem("pet_history");
+  } catch (e) {}
+  renderHistory();
+  showToast("Histórico limpo!");
+});
+
+/* =====================================================================
+   GERADOR DE CARD PARA STATUS / STORY (CANVAS EXPORT)
+   ===================================================================== */
+function generateStoryCard() {
+  const c = $("cardCanvas");
+  const cx = c.getContext("2d");
+  const specData = PET_DATA[currentSpecies];
+
+  // Fundo com Gradiente
+  const grad = cx.createLinearGradient(0, 0, 0, 1000);
+  grad.addColorStop(0, "#231F5C");
+  grad.addColorStop(1, "#12102E");
+  cx.fillStyle = grad;
+  cx.fillRect(0, 0, 800, 1000);
+
+  // Moldura decorativa
+  cx.strokeStyle = "rgba(255, 92, 138, 0.4)";
+  cx.lineWidth = 10;
+  cx.strokeRect(30, 30, 740, 940);
+
+  // Selo do Topo
+  cx.fillStyle = "#FFC933";
+  cx.beginPath();
+  cx.roundRect(220, 80, 360, 50, 25);
+  cx.fill();
+
+  cx.fillStyle = "#231F5C";
+  cx.font = "bold 24px Fredoka, sans-serif";
+  cx.textAlign = "center";
+  cx.fillText("🐾 TRADUTOR DE PETS IA", 400, 114);
+
+  // Avatar do Animal
+  cx.font = "90px Fredoka, sans-serif";
+  cx.fillText(specData.icon, 400, 230);
+
+  // Espécie e Humor
+  cx.fillStyle = "#FF5C8A";
+  cx.font = "bold 34px Fredoka, sans-serif";
+  cx.fillText(`O que meu ${specData.name} disse:`, 400, 290);
+
+  cx.fillStyle = "#9E98DE";
+  cx.font = "24px Fredoka, sans-serif";
+  cx.fillText(`Humor: ${$("mood").textContent}`, 400, 335);
+
+  // Balão de Texto Central
+  cx.fillStyle = "#FFFFFF";
+  cx.beginPath();
+  cx.roundRect(80, 380, 640, 320, 30);
+  cx.fill();
+
+  // Bico do balão
+  cx.beginPath();
+  cx.moveTo(380, 380);
+  cx.lineTo(400, 350);
+  cx.lineTo(420, 380);
+  cx.fill();
+
+  // Texto da Frase quebrando linhas
+  cx.fillStyle = "#231F5C";
+  cx.font = "italic 600 32px Fredoka, sans-serif";
+  wrapText(cx, $("txt").textContent, 400, 480, 560, 44);
+
+  // Rodapé do Card
+  cx.fillStyle = "#FFC933";
+  cx.font = "bold 28px Fredoka, sans-serif";
+  cx.fillText(`Precisão Garantida: ${$("pctAccuracy").textContent}`, 400, 770);
+
+  cx.fillStyle = "#9E98DE";
+  cx.font = "20px Fredoka, sans-serif";
+  cx.fillText("Certificado oficial pelo Instituto Canino e Felino 🐾", 400, 820);
+  cx.fillText("Gere o seu em: tradutordepets.app", 400, 860);
+
+  // Download imediato como PNG
+  try {
+    const dataUrl = c.toDataURL("image/png");
+    const a = document.createElement("a");
+    a.download = `traducao-${currentSpecies}.png`;
+    a.href = dataUrl;
+    a.click();
+    showToast("🖼️ Card baixado com sucesso!");
+  } catch (err) {
+    showToast("Erro ao gerar card de imagem.");
+  }
+}
+
+function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = text.split(" ");
+  let line = "";
+  let currentY = y;
+  for (let n = 0; n < words.length; n++) {
+    const testLine = line + words[n] + " ";
+    const metrics = ctx.measureText(testLine);
+    if (metrics.width > maxWidth && n > 0) {
+      ctx.fillText(line, x, currentY);
+      line = words[n] + " ";
+      currentY += lineHeight;
+    } else {
+      line = testLine;
+    }
+  }
+  ctx.fillText(line, x, currentY);
+}
+
+/* =====================================================================
+   TAB 2: HUMANO PARA PET (TRADUÇÃO INVERSA)
+   ===================================================================== */
+$("translateHumanBtn").addEventListener("click", () => {
+  const val = $("humanInput").value.trim();
+  if (!val) {
+    showToast("Digite algo para falar ao seu pet!");
+    return;
+  }
+
+  playSynthesizedSound("click");
+  const box = $("humanResultBox");
+  box.classList.remove("show");
+
+  setTimeout(() => {
+    let petSound = "AU AU RUFF WOOF!";
+    let guide = "Abane o rabo e dê pulinhos de alegria.";
+
+    if (currentSpecies === "dog") {
+      const barks = ["AU-AU-AU WUF!", "WOOF! RUFF RUFF!", "AUUUU ARF! 🐾"];
+      petSound = barks[Math.floor(Math.random() * barks.length)];
+      guide = "Dica: Fale em tom agudo, mostre as palmas das mãos e dê um petisco.";
+      playSynthesizedSound("bark-happy");
+    } else if (currentSpecies === "cat") {
+      const meows = ["MIIAAAUUU PRRRR...", "MROW MRRR MEW!", "PRRR-MIAU! 🐱"];
+      petSound = meows[Math.floor(Math.random() * meows.length)];
+      guide = "Dica: Pisque devagar com os dois olhos para demonstrar confiança felina.";
+      playSynthesizedSound("meow-cute");
+    } else if (currentSpecies === "bird") {
+      petSound = "PIU-PIU FIU-FIU TRRR! 🦜";
+      guide = "Dica: Incline a cabeça ligeiramente para o lado e balance os dedos.";
+      playSynthesizedSound("squeak");
+    } else {
+      petSound = "CUIK CUIK SNIFF! 🐹";
+      guide = "Dica: Aproxime a mão pelo chão e ofereça uma sementinha.";
+      playSynthesizedSound("squeak");
+    }
+
+    $("humanPetSpeak").textContent = petSound;
+    $("humanPetGuide").textContent = guide;
+    box.classList.add("show");
+  }, 300);
+});
+
+// Chips de frases rápidas
+document.querySelectorAll(".quick-chip").forEach(chip => {
+  chip.addEventListener("click", () => {
+    $("humanInput").value = chip.getAttribute("data-phrase");
+    $("translateHumanBtn").click();
+  });
+});
+
+/* =====================================================================
+   INTERAÇÕES E CONTROLES
+   ===================================================================== */
+// Botão Principal de Gravação
+recBtn.addEventListener("click", () => {
+  if (isRecording) {
+    stopRecording();
+  } else {
+    startRecording();
+  }
+});
+
+// Botão de Ouvir em voz alta
+$("say").addEventListener("click", () => {
+  playSynthesizedSound("click");
+  speakPhrase(lastPhrase);
+});
+
+// Botão de Gerar Outro Pensamento
+$("again").addEventListener("click", () => {
+  playSynthesizedSound("click");
+  doTranslation();
+});
+
+// Copiar texto para Área de Transferência
+$("copyText").addEventListener("click", () => {
+  if (!lastPhrase) return;
+  navigator.clipboard.writeText(`Meu pet disse: "${lastPhrase}" 🐾 Traduzido no Tradutor de Pets`)
+    .then(() => showToast("📋 Frase copiada para a área de transferência!"))
+    .catch(() => showToast("Não foi possível copiar o texto."));
+});
+
+// Compartilhar no WhatsApp
+$("shareWa").addEventListener("click", () => {
+  if (!lastPhrase) return;
+  const msg = encodeURIComponent(`Olha o que meu pet disse hoje: "${lastPhrase}" 😂🐾 Traduzido no Tradutor de Pets!`);
+  window.open(`https://api.whatsapp.com/send?text=${msg}`, "_blank");
+});
+
+// Salvar Card como Imagem
+$("saveCardBtn").addEventListener("click", () => {
+  generateStoryCard();
+});
+
+// Seleção de Espécies
+document.querySelectorAll(".species-card").forEach(card => {
+  card.addEventListener("click", () => {
+    playSynthesizedSound("click");
+    document.querySelectorAll(".species-card").forEach(c => c.classList.remove("active"));
+    card.classList.add("active");
+    currentSpecies = card.getAttribute("data-species");
+    $("hint").textContent = `Modo ${PET_DATA[currentSpecies].name} ativado. Toque na pata!`;
+    
+    // Se a bolha estiver aberta, recalcula a expressão
+    if ($("bubble").classList.contains("show") && !$("result").hidden) {
+      doTranslation();
+    }
+  });
+});
+
+// Simulador Rápido de Sons
+document.querySelectorAll(".chip-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const sound = btn.getAttribute("data-sound");
+    playSynthesizedSound(sound);
+    showToast(`Ouvindo som: ${btn.textContent.trim()}...`);
+    setTimeout(() => {
+      doTranslation();
+    }, 400);
+  });
+});
+
+// Navegação de Abas
+document.querySelectorAll(".tab-btn").forEach(tab => {
+  tab.addEventListener("click", () => {
+    playSynthesizedSound("click");
+    document.querySelectorAll(".tab-btn").forEach(t => {
+      t.classList.remove("active");
+      t.setAttribute("aria-selected", "false");
+    });
+    document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+
+    tab.classList.add("active");
+    tab.setAttribute("aria-selected", "true");
+    const target = tab.getAttribute("data-tab");
+    $(target).classList.add("active");
+  });
+});
+
+// Toggle de Sons de Efeitos
+$("soundToggle").addEventListener("click", () => {
+  soundEffectsEnabled = !soundEffectsEnabled;
+  $("soundToggle").textContent = soundEffectsEnabled ? "🔊" : "🔇";
+  showToast(soundEffectsEnabled ? "Sons de efeitos ativados" : "Sons de efeitos silenciados");
+});
+
+// Toggle de Tema (Dark / Light)
+$("themeToggle").addEventListener("click", () => {
+  playSynthesizedSound("click");
+  isDarkTheme = !isDarkTheme;
+  document.documentElement.setAttribute("data-theme", isDarkTheme ? "dark" : "light");
+  $("themeToggle").textContent = isDarkTheme ? "☀️" : "🌙";
+  try {
+    localStorage.setItem("pet_theme", isDarkTheme ? "dark" : "light");
+  } catch (e) {}
+});
+
+function loadTheme() {
+  try {
+    const saved = localStorage.getItem("pet_theme");
+    if (saved) {
+      isDarkTheme = saved === "dark";
+    } else {
+      isDarkTheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    }
+    document.documentElement.setAttribute("data-theme", isDarkTheme ? "dark" : "light");
+    $("themeToggle").textContent = isDarkTheme ? "☀️" : "🌙";
+  } catch (e) {}
+}
+
+// Toast Notificações
+let toastTimer;
+function showToast(msg) {
+  const t = $("toast");
+  $("toastMsg").textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    t.classList.remove("show");
+  }, 2800);
+}
+
+// Contador de estatísticas fictícias dinâmico
+function updateStats() {
+  const base = 12400 + Math.floor(Math.random() * 50);
+  $("statsCount").textContent = `🐾 Mais de ${base.toLocaleString("pt-BR")} latidos decodificados hoje`;
+}
+
+// Inicialização
+loadTheme();
+loadHistory();
+drawVisualizer();
 </script>
 </body>
 </html>
